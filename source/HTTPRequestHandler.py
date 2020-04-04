@@ -13,8 +13,10 @@ from . import creds
 class DealUpdatesHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
+            logging.info("New POST request accepted!")
             query = parse.urlparse(self.path).query
             query_components = parse.parse_qs(query, keep_blank_values=True)
+            logging.info("Accepted query components: %s", query_components)
 
             if WEBHOOK_SECRET_ALIAS in query_components \
                     and query_components[WEBHOOK_SECRET_ALIAS][0] == creds.BITRIX_WEBHOOK_SECRET:

@@ -1,6 +1,6 @@
 import logging
 import threading
-from http.server import HTTPServer
+from source.HTTPServer import ThreadedHTTPServer
 from logging.handlers import RotatingFileHandler
 from source.TelegramWorker import TgWorker
 from source.BitrixWorker import BitrixWorker
@@ -13,7 +13,7 @@ LOG_LEVEL = logging.INFO
 
 def http_serve():
     try:
-        deals_update_server = HTTPServer((HTTP_SERVER_ADDRESS, HTTP_SERVER_PORT), DealUpdatesHandler)
+        deals_update_server = ThreadedHTTPServer((HTTP_SERVER_ADDRESS, HTTP_SERVER_PORT), DealUpdatesHandler)
 
         while True:
             try:
