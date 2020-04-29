@@ -2,6 +2,7 @@ import requests
 from . import creds
 import logging
 import pickle
+from collections import Iterable
 
 from .BitrixFieldsAliases import *
 from .TelegramWorker import TgWorker
@@ -50,18 +51,26 @@ class BitrixWorker:
         return None
 
     @staticmethod
-    def get_deal_photo_dl_urls(chat_id, deal_id):
+    def generate_photo_link(obj):
+        path = obj['downloadUrl'].replace('auth=', 'auth=' + BitrixWorker.APP_ACCESS_TOKEN)
+        return creds.BITRIX_MAIN_PAGE + path
+
+    @staticmethod
+    def get_deal_photo_dl_urls(chat_id, deal_id, field_aliases=()):
         deal = BitrixWorker._send_request(chat_id, 'crm.deal.get', params={'id': deal_id})
         photos_list = []
 
         # for now, refresh oauth all the times
         BitrixWorker.refresh_oauth()
 
-        if DEAL_BIG_PHOTO_ALIAS in deal:
-            for photo in deal[DEAL_BIG_PHOTO_ALIAS]:
-                path = photo['downloadUrl'].replace('auth=', 'auth=' + BitrixWorker.APP_ACCESS_TOKEN)
-                dl_link = creds.BITRIX_MAIN_PAGE + path
-                photos_list.append(dl_link)
+        for fa in field_aliases:
+            if fa in deal:
+                data = deal[fa]
+                if isinstance(data, list):
+                    for photo in data:
+                        photos_list.append(BitrixWorker.generate_photo_link(photo))
+                else:
+                    photos_list.append(BitrixWorker.generate_photo_link(data))
 
         return photos_list
 
@@ -82,9 +91,9 @@ class BitrixWorker:
                     logging.info(json)
 
                     logging.info("ACCESS TOKEN PREV")
-                    logging.info( BitrixWorker.APP_ACCESS_TOKEN)
+                    logging.info(BitrixWorker.APP_ACCESS_TOKEN)
                     logging.info("REFRESH TOKEN PREV")
-                    logging.info( BitrixWorker.APP_REFRESH_TOKEN)
+                    logging.info(BitrixWorker.APP_REFRESH_TOKEN)
 
                     BitrixWorker.APP_ACCESS_TOKEN = json['access_token']
                     BitrixWorker.APP_REFRESH_TOKEN = json['refresh_token']
