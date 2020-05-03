@@ -17,18 +17,16 @@ class TgWorker:
     REQUESTS_MAX_ATTEMPTS = 5
     GLOBAL_LOOP_ERROR_TIMEOUT = 60  # seconds
     SESSION = requests.session()
+    PROXIES = [creds.HTTPS_PROXY_FINLAND, creds.HTTPS_PROXY_GERMANY]
     CommandsHandler = None
-    
-    @staticmethod
-    def set_commands_handler():
-        TgWorker.CommandsHandler = TelegramCommandsHandler(TgWorker)
 
     @staticmethod
     def send_request(method, params, custom_error_text=''):
+        proxy_index = 0
 
         for a in range(TgWorker.REQUESTS_MAX_ATTEMPTS):
             try:
-                response = TgWorker.SESSION.post(url=creds.TG_API_URL + method, proxies=creds.HTTPS_PROXY,
+                response = TgWorker.SESSION.post(url=creds.TG_API_URL + method, proxies=TgWorker.PROXIES[proxy_index],
                                              json=params, timeout=TgWorker.REQUESTS_TIMEOUT)
 
                 if response:
@@ -42,6 +40,16 @@ class TgWorker:
                 else:
                     logging.error('TG response failed%s : Attempt: %s, Called: %s : Request params: %s',
                                   a, response.text, custom_error_text, params)
+
+            except requests.exceptions.ProxyError:
+                logging.error('Proxy #{} got connection error.'.format(proxy_index))
+
+                if proxy_index < (len(TgWorker.PROXIES) - 1):
+                    proxy_index += 1
+                    logging.info('Trying proxy #{}'.format(proxy_index))
+                else:
+                    logging.error('All proxies got connection problems. Request failed')
+
             except Exception as e:
                 logging.error('Sending TG api request %s', e)
 
