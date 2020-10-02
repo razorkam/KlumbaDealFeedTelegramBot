@@ -1,3 +1,5 @@
+// https://afinogen.su/article/polucenie-sessionnogo-tokena-dla-prilozenia-bitrix24
+
 <?php
 function redirect($url)
 {

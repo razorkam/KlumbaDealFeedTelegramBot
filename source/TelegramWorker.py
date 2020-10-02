@@ -17,7 +17,7 @@ class TgWorker:
     REQUESTS_MAX_ATTEMPTS = 5
     GLOBAL_LOOP_ERROR_TIMEOUT = 60  # seconds
     SESSION = requests.session()
-    PROXIES = [creds.HTTPS_PROXY_FINLAND, creds.HTTPS_PROXY_GERMANY]
+    PROXIES = [creds.HTTPS_PROXY_2, creds.HTTPS_PROXY_1]
     CommandsHandler = None
 
     @staticmethod
