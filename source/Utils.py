@@ -21,6 +21,7 @@ def _stringify_field(field):
     else:
         return field
 
+
 def prepare_external_field(obj, key):
     val = get_field(obj, key)
 

@@ -33,12 +33,13 @@ class DealUpdatesHandler(BaseHTTPRequestHandler):
                 deal_sum = Utils.prepare_external_field(query_components, WEBHOOK_SUM_ALIAS)
                 deal_date = Utils.prepare_external_field(query_components, WEBHOOK_DATE_ALIAS)
                 deal_time = Utils.prepare_external_field(query_components, WEBHOOK_TIME_ALIAS)
+                deal_type = Utils.prepare_external_field(query_components, WEBHOOK_TYPE_ALIAS)
 
                 if action == BitrixFieldMappings.BITRIX_ACTION_EQUIPPED:
                     deal_message = TextSnippets.DEAL_TEMPLATE.format(TextSnippets.DEAL_STATE_EQUIPPED, deal_id,
                                                                      deal_order, deal_courier,
                                                                      deal_responsible, deal_florist, deal_accepted,
-                                                                     deal_sum, deal_date, deal_time)
+                                                                     deal_sum, deal_date, deal_time, deal_type)
 
                     if deal_id != TextSnippets.FIELD_IS_EMPTY_PLACEHOLDER:
                         photo_urls = BitrixWorker.get_deal_photo_dl_urls(creds.EQUIPPED_GROUP_CHAT_ID, deal_id,
@@ -54,7 +55,7 @@ class DealUpdatesHandler(BaseHTTPRequestHandler):
                     deal_message = TextSnippets.DEAL_TEMPLATE.format(TextSnippets.DEAL_STATE_DELIVERY, deal_id,
                                                                      deal_order, deal_courier,
                                                                      deal_responsible, deal_florist, deal_accepted,
-                                                                     deal_sum, deal_date, deal_time)
+                                                                     deal_sum, deal_date, deal_time, deal_type)
 
                     if deal_id != TextSnippets.FIELD_IS_EMPTY_PLACEHOLDER:
                         photo_urls = BitrixWorker.get_deal_photo_dl_urls(creds.DELIVERY_GROUP_CHAT_ID, deal_id,
