@@ -1,5 +1,3 @@
-from . import Commands
-
 REQUEST_PASS_MESSAGE = 'Добро пожаловать в *ленту завершенных заказов Клумба*!\n' \
                                'Введите пароль для дальнейшей работы.\n' \
 
@@ -18,9 +16,9 @@ BOT_HELP_TEXT = 'Лента завершенных заказов отображ
 ERROR_BITRIX_REQUEST = 'Произошла ошибка при обращении к серверу. \n' \
                        'Попробуйте снова или подождите некоторое время.'
 
-
+# Now using: 'equipped', 'in delivery'
 DEAL_TEMPLATE = \
-                'Заказ {}!\n' \
+                'Заказ {}\\!\n' \
                 '*№ заказа:* {}\n' \
                 '*Что заказано:* {}\n' \
                 '*Курьер:* {}\n' \
@@ -33,6 +31,20 @@ DEAL_TEMPLATE = \
                 '*Тип заказа:* *{}*\n'
 #               '{photo}'
 
+# Now using: 'reserved', 'waiting for supply'
+DEAL_RESERVED_TEMPLATE = \
+                '*№ заказа:* {}\n' \
+                '*Что отложено:* {}\n' \
+                '*Что заказано:* {}\n' \
+                '*Ссылка на заказ:* {}\n' \
+                '*Дата:* {}\n' \
+                '*Время:* {}\n' \
+                '*Тип заказа:* *{}*\n'\
+                '*Кто принял заказ:* {}\n'
+#               '{photo}'
+
+DEAL_WAITING_FOR_SUPPLY_STUB = 'Ждет поставки'
+DEAL_NO_RESERVE_NEEDED_STUB = 'Резерв не нужен'
 
 DEAL_STATE_EQUIPPED = 'укомплектован'
 DEAL_STATE_DELIVERY = 'в доставке'

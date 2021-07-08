@@ -1,19 +1,18 @@
 import logging
 import threading
 from source.HTTPServer import ThreadedHTTPServer
-from logging.handlers import RotatingFileHandler
-from source.TelegramWorker import TgWorker
-from source.BitrixWorker import BitrixWorker
 from source.HTTPRequestHandler import DealUpdatesHandler
-from source.MiscConstants import *
+from source import config as cfg
+from source import TelegramWorker
 
-LOG_MAX_SIZE = 2 * 1024 * 1024  # 2 mbytes
-LOG_LEVEL = logging.INFO
+
+# journalctl logging when running via systemctl
+logging.basicConfig(level=cfg.LOG_LEVEL, format=cfg.LOG_FORMAT)
 
 
 def http_serve():
     try:
-        deals_update_server = ThreadedHTTPServer((HTTP_SERVER_ADDRESS, HTTP_SERVER_PORT), DealUpdatesHandler)
+        deals_update_server = ThreadedHTTPServer((cfg.HTTP_SERVER_ADDRESS, cfg.HTTP_SERVER_PORT), DealUpdatesHandler)
 
         while True:
             try:
@@ -26,22 +25,12 @@ def http_serve():
 
 
 def main():
-    log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
-    log_handler = RotatingFileHandler('app.log', mode='a', maxBytes=LOG_MAX_SIZE,
-                                      backupCount=5)
-    log_handler.setFormatter(log_formatter)
-    log_handler.setLevel(LOG_LEVEL)
-    logging.getLogger().setLevel(LOG_LEVEL)
-    logging.basicConfig(handlers=[log_handler])
-
     http_daemon = threading.Thread(name='deals_update_server', daemon=True,
                                    target=http_serve)
     http_daemon.start()
 
-    BitrixWorker.load_tokens_store()
-
     # no message listening needed now
-    TgWorker.run()
+    TelegramWorker.run()
 
 
 main()
