@@ -1,2 +1,0 @@
-BITRIX_ACTION_EQUIPPED = 'equipped'
-BITRIX_ACTION_DELIVERY = 'delivery'

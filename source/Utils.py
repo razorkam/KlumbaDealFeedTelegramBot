@@ -1,31 +1,27 @@
-import re
-from . import Commands, TextSnippets
-
-MD_ESCAPE_PATTERN = re.compile('([*_`])')
+import telegram.utils.helpers as tg_helpers
+import source.TextSnippets as Txt
 
 
-def get_field(obj, key):
-    if key in obj:
-        return obj[key]
-    else:
-        return None
-
-
-def _escape_markdown_special_chars(str):
-    return re.sub(MD_ESCAPE_PATTERN, r'\\\g<1>', str)
+# fully escape Markdownv2 string
+def escape_mdv2(string):
+    return tg_helpers.escape_markdown(text=string, version=2)
 
 
 def _stringify_field(field):
-    if field in (False, None, {}, [], ''):
-        return TextSnippets.FIELD_IS_EMPTY_PLACEHOLDER
+    if not bool(field):
+        return Txt.FIELD_IS_EMPTY_PLACEHOLDER
     else:
-        return field
+        return str(field)
 
 
-def prepare_external_field(obj, key):
-    val = get_field(obj, key)
+def prepare_external_field(obj, key, escape_md=True):
+    if not obj:
+        return Txt.FIELD_IS_EMPTY_PLACEHOLDER
+
+    val = obj.get(key)
 
     if type(val) is list:
         val = ', '.join(val)
 
-    return _escape_markdown_special_chars(_stringify_field(val))
+    stringified = _stringify_field(val)
+    return escape_mdv2(stringified) if escape_md else stringified
