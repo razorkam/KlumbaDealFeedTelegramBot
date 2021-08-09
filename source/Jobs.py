@@ -103,10 +103,12 @@ def deal_waiting_for_supply(context: CallbackContext):
     deal_date = Utils.prepare_external_field(query_components, WEBHOOK_DATE_ALIAS)
     deal_time = Utils.prepare_external_field(query_components, WEBHOOK_TIME_ALIAS)
     deal_type = Utils.prepare_external_field(query_components, WEBHOOK_TYPE_ALIAS)
+    deal_supply_date = Utils.prepare_external_field(query_components, WEBHOOK_SUPPLY_DATE_ALIAS)
 
-    deal_message = Txt.DEAL_RESERVED_TEMPLATE.format(deal_id,
-                                                     Txt.DEAL_WAITING_FOR_SUPPLY_STUB, deal_order,
-                                                     deal_link, deal_date, deal_time, deal_type, deal_accepted)
+    deal_message = Txt.DEAL_WAITING_FOR_SUPPLY_TEMPLATE.format(deal_id,
+                                                               Txt.DEAL_WAITING_FOR_SUPPLY_STUB, deal_order,
+                                                               deal_link, deal_date, deal_time, deal_type,
+                                                               deal_accepted, deal_supply_date)
 
     if deal_id != Txt.FIELD_IS_EMPTY_PLACEHOLDER:
         photo_stub_path = pathlib.Path(__file__).parent.resolve() / 'data/waiting_for_supply.png'
@@ -160,5 +162,3 @@ def deal_reserved(context: CallbackContext):
                 with open(photo_stub_path, 'rb') as f:
                     bot.send_photo(chat_id=creds.RESERVED_GROUP_CHAT_ID, photo=f,
                                    caption=deal_message, parse_mode=ParseMode.MARKDOWN_V2)
-
-

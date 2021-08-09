@@ -31,7 +31,22 @@ DEAL_TEMPLATE = \
                 '*Тип заказа:* *{}*\n'
 #               '{photo}'
 
-# Now using: 'reserved', 'waiting for supply'
+
+# Now using: 'waiting for supply'
+DEAL_WAITING_FOR_SUPPLY_TEMPLATE = \
+                '*№ заказа:* {}\n' \
+                '*Что отложено:* {}\n' \
+                '*Что заказано:* {}\n' \
+                '*Ссылка на заказ:* {}\n' \
+                '*Дата:* {}\n' \
+                '*Время:* {}\n' \
+                '*Тип заказа:* *{}*\n'\
+                '*Кто принял заказ:* {}\n'\
+                '*Дата поставки:* {}\n'
+#               '{photo}'
+
+
+# Now using: 'reserved'
 DEAL_RESERVED_TEMPLATE = \
                 '*№ заказа:* {}\n' \
                 '*Что отложено:* {}\n' \
