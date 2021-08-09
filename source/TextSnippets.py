@@ -31,22 +31,7 @@ DEAL_TEMPLATE = \
                 '*Тип заказа:* *{}*\n'
 #               '{photo}'
 
-
-# Now using: 'waiting for supply'
-DEAL_WAITING_FOR_SUPPLY_TEMPLATE = \
-                '*№ заказа:* {}\n' \
-                '*Что отложено:* {}\n' \
-                '*Что заказано:* {}\n' \
-                '*Ссылка на заказ:* {}\n' \
-                '*Дата:* {}\n' \
-                '*Время:* {}\n' \
-                '*Тип заказа:* *{}*\n'\
-                '*Кто принял заказ:* {}\n'\
-                '*Дата поставки:* {}\n'
-#               '{photo}'
-
-
-# Now using: 'reserved'
+# Now using: 'reserved', 'waiting for supply'
 DEAL_RESERVED_TEMPLATE = \
                 '*№ заказа:* {}\n' \
                 '*Что отложено:* {}\n' \
@@ -60,6 +45,19 @@ DEAL_RESERVED_TEMPLATE = \
 
 DEAL_WAITING_FOR_SUPPLY_STUB = 'Ждет поставки'
 DEAL_NO_RESERVE_NEEDED_STUB = 'Резерв не нужен'
+
+# Now using: 'waiting for supply'
+DEAL_WAITING_FOR_SUPPLY_TEMPLATE = \
+                '*№ заказа:* {}\n' \
+                '*Что отложено:* {}\n' \
+                '*Что заказано:* {}\n' \
+                '*Ссылка на заказ:* {}\n' \
+                '*Дата:* {}\n' \
+                '*Время:* {}\n' \
+                '*Тип заказа:* *{}*\n'\
+                '*Кто принял заказ:* {}\n'\
+                '*Дата поставки:* {}\n'
+#               '{photo}'
 
 DEAL_STATE_EQUIPPED = 'укомплектован'
 DEAL_STATE_DELIVERY = 'в доставке'
