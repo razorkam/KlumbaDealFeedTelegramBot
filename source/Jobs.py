@@ -104,11 +104,15 @@ def deal_waiting_for_supply(context: CallbackContext):
     deal_time = Utils.prepare_external_field(query_components, WEBHOOK_TIME_ALIAS)
     deal_type = Utils.prepare_external_field(query_components, WEBHOOK_TYPE_ALIAS)
     deal_supply_date = Utils.prepare_external_field(query_components, WEBHOOK_SUPPLY_DATE_ALIAS)
+    deal_delivery_comment = Utils.prepare_external_field(query_components, WEBHOOK_DELIVERY_COMMENT_ALIAS)
+    deal_delivery_type = Utils.prepare_external_field(query_components, WEBHOOK_DELIVERY_TYPE_ALIAS)
+    deal_subdivision = Utils.prepare_external_field(query_components, WEBHOOK_SUBDIVISION_ALIAS)
 
     deal_message = Txt.DEAL_WAITING_FOR_SUPPLY_TEMPLATE.format(deal_id,
                                                                Txt.DEAL_WAITING_FOR_SUPPLY_STUB, deal_order,
                                                                deal_link, deal_date, deal_time, deal_type,
-                                                               deal_accepted, deal_supply_date)
+                                                               deal_accepted, deal_delivery_comment, deal_delivery_type,
+                                                               deal_subdivision, deal_supply_date)
 
     if deal_id != Txt.FIELD_IS_EMPTY_PLACEHOLDER:
         photo_stub_path = pathlib.Path(__file__).parent.resolve() / 'data/waiting_for_supply.png'
@@ -130,13 +134,17 @@ def deal_reserved(context: CallbackContext):
     deal_date = Utils.prepare_external_field(query_components, WEBHOOK_DATE_ALIAS)
     deal_time = Utils.prepare_external_field(query_components, WEBHOOK_TIME_ALIAS)
     deal_type = Utils.prepare_external_field(query_components, WEBHOOK_TYPE_ALIAS)
+    deal_delivery_comment = Utils.prepare_external_field(query_components, WEBHOOK_DELIVERY_COMMENT_ALIAS)
+    deal_delivery_type = Utils.prepare_external_field(query_components, WEBHOOK_DELIVERY_TYPE_ALIAS)
+    deal_subdivision = Utils.prepare_external_field(query_components, WEBHOOK_SUBDIVISION_ALIAS)
 
     deal_reserved_str = Utils.prepare_external_field(query_components, WEBHOOK_RESERVED_STR_ALIAS) \
         if deal_is_reserved.lower() == DEAL_IS_RESERVED_YES.lower() else Txt.DEAL_NO_RESERVE_NEEDED_STUB
 
     deal_message = Txt.DEAL_RESERVED_TEMPLATE.format(deal_id,
                                                      deal_reserved_str, deal_order,
-                                                     deal_link, deal_date, deal_time, deal_type, deal_accepted)
+                                                     deal_link, deal_date, deal_time, deal_type, deal_accepted,
+                                                     deal_delivery_comment, deal_delivery_type, deal_subdivision)
 
     with BW.OAUTH_LOCK:
         access_token = context.bot_data[cfg.BOT_ACCESS_TOKEN_PERSISTENT_KEY]
