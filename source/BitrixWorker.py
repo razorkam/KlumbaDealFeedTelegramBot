@@ -1,4 +1,5 @@
 import requests
+import time
 from . import creds
 import logging
 from threading import Lock
@@ -7,6 +8,9 @@ from threading import Lock
 SESSION = requests.session()
 REQUESTS_TIMEOUT = 10
 REQUESTS_MAX_ATTEMPTS = 3
+
+QUERY_LIMIT_EXCEEDED = 'QUERY_LIMIT_EXCEEDED'
+SLEEP_INTERVAL = 1
 
 # Bitrix OAuth keys
 # store in Telegram bot persistence to serialize automatically
@@ -27,6 +31,14 @@ def send_request(method, params=None, handle_next=False):
 
             if response and response.ok:
                 json = response.json()
+
+                error = json.get('error')
+
+                # TODO: handle QUERY_LIMIT_EXCEEDED properly
+                if error == QUERY_LIMIT_EXCEEDED:
+                    time.sleep(SLEEP_INTERVAL)
+                    continue
+
                 next_counter = json.get('next')
                 result = json.get('result')
 
