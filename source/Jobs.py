@@ -190,11 +190,13 @@ def deal_unapproved(context: CallbackContext):
         deal_time = Utils.prepare_external_field(query_components, WEBHOOK_TIME_ALIAS)
         deal_delivery_comment = Utils.prepare_external_field(query_components, WEBHOOK_DELIVERY_COMMENT_ALIAS)
         deal_source = Utils.prepare_external_field(query_components, WEBHOOK_SOURCE_ALIAS)
+        deal_sum = Utils.prepare_external_field(query_components, WEBHOOK_SUM_ALIAS)
 
         deal_message = Txt.DEAL_UNAPPROVED_TEMPLATE.format(deal_id,
                                                            deal_order, deal_client_comment, deal_client_callback,
                                                            deal_responsible, deal_florist, deal_equipper,
-                                                           deal_date, deal_time, deal_delivery_comment, deal_source)
+                                                           deal_date, deal_time, deal_delivery_comment, deal_source,
+                                                           deal_sum)
 
         if deal_id != Txt.FIELD_IS_EMPTY_PLACEHOLDER:
             photo_urls = BW.get_deal_photo_dl_urls(deal_id, access_token,
